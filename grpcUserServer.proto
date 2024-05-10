@@ -8,13 +8,12 @@ service userServerService {
 }
 
 message GetProfileDataRequest {
-    string UserUUID = 1;
-    string BlockedUserUUID = 2;
-    string Type = 3;
+    string UserID = 1;
 }
 
 message GetProfileDataResponse {
-    string UserUUID = 1;
-    string BlockedUserUUID = 2;
-    string Type = 3;
+    string UserID = 1;
+    string FullName = 2;
+    string AvatarName = 3;
+    string Type = 4;
 }
