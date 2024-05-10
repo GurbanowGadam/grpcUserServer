@@ -1,0 +1,20 @@
+syntax = "proto3";
+package grpcUserServer;
+
+option go_package = "github.com/GurbanowGadam/grpcUserServer";
+
+service userServerService {
+    rpc GetProfileData(GetProfileDataRequest) returns (GetProfileDataResponse);
+}
+
+message GetProfileDataRequest {
+    string UserUUID = 1;
+    string BlockedUserUUID = 2;
+    string Type = 3;
+}
+
+message GetProfileDataResponse {
+    string UserUUID = 1;
+    string BlockedUserUUID = 2;
+    string Type = 3;
+}
