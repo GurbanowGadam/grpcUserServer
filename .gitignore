@@ -1,4 +1,6 @@
 command.txt
 go.sum
 server
+client
+ssl
 .idea

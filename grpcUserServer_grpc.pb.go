@@ -23,6 +23,7 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type UserServerServiceClient interface {
 	GetProfileData(ctx context.Context, in *GetProfileDataRequest, opts ...grpc.CallOption) (*GetProfileDataResponse, error)
+	GetBlockedLists(ctx context.Context, in *GetBlockedListsRequest, opts ...grpc.CallOption) (*GetBlockedListsResponse, error)
 }
 
 type userServerServiceClient struct {
@@ -42,11 +43,21 @@ func (c *userServerServiceClient) GetProfileData(ctx context.Context, in *GetPro
 	return out, nil
 }
 
+func (c *userServerServiceClient) GetBlockedLists(ctx context.Context, in *GetBlockedListsRequest, opts ...grpc.CallOption) (*GetBlockedListsResponse, error) {
+	out := new(GetBlockedListsResponse)
+	err := c.cc.Invoke(ctx, "/grpcUserServer.userServerService/GetBlockedLists", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServerServiceServer is the server API for UserServerService service.
 // All implementations must embed UnimplementedUserServerServiceServer
 // for forward compatibility
 type UserServerServiceServer interface {
 	GetProfileData(context.Context, *GetProfileDataRequest) (*GetProfileDataResponse, error)
+	GetBlockedLists(context.Context, *GetBlockedListsRequest) (*GetBlockedListsResponse, error)
 	mustEmbedUnimplementedUserServerServiceServer()
 }
 
@@ -56,6 +67,9 @@ type UnimplementedUserServerServiceServer struct {
 
 func (UnimplementedUserServerServiceServer) GetProfileData(context.Context, *GetProfileDataRequest) (*GetProfileDataResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetProfileData not implemented")
+}
+func (UnimplementedUserServerServiceServer) GetBlockedLists(context.Context, *GetBlockedListsRequest) (*GetBlockedListsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetBlockedLists not implemented")
 }
 func (UnimplementedUserServerServiceServer) mustEmbedUnimplementedUserServerServiceServer() {}
 
@@ -88,6 +102,24 @@ func _UserServerService_GetProfileData_Handler(srv interface{}, ctx context.Cont
 	return interceptor(ctx, in, info, handler)
 }
 
+func _UserServerService_GetBlockedLists_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetBlockedListsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServerServiceServer).GetBlockedLists(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/grpcUserServer.userServerService/GetBlockedLists",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServerServiceServer).GetBlockedLists(ctx, req.(*GetBlockedListsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // UserServerService_ServiceDesc is the grpc.ServiceDesc for UserServerService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -98,6 +130,10 @@ var UserServerService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetProfileData",
 			Handler:    _UserServerService_GetProfileData_Handler,
+		},
+		{
+			MethodName: "GetBlockedLists",
+			Handler:    _UserServerService_GetBlockedLists_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
