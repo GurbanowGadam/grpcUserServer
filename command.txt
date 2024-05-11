@@ -1,0 +1,13 @@
+go get -u github.com/golang/protobuf/{proto,protoc-gen-go}
+
+sudo nano ~/.bash_profile
+
+export GO_PATH=~/go
+export PATH=$PATH:/$GO_PATH/bin
+
+source ~/.bash_profile
+
+
+protoc --go_out=. --go_opt=paths=source_relative --go-grpc_out=. --go-grpc_opt=paths=source_relative grpcUserServer.proto
+
+grpcUserServer.proto yanyna cykarya.

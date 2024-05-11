@@ -6,6 +6,7 @@ option go_package = "github.com/GurbanowGadam/grpcUserServer";
 service userServerService {
     rpc GetProfileData(GetProfileDataRequest) returns (GetProfileDataResponse);
     rpc GetBlockedLists(GetBlockedListsRequest) returns (GetBlockedListsResponse);
+    rpc GetUsers(GetUsersRequest) returns (GetUsersResponse);
 }
 
 message GetProfileDataRequest {
@@ -25,6 +26,20 @@ message GetBlockedListsRequest {
 }
 
 message GetBlockedListsResponse {
+    string UserID = 1;
+    string FullName = 2;
+}
+
+//-----------------------------------
+message GetUsersRequest {
+  string LastUser = 1;
+}
+
+message GetUsersResponse {
+  repeated GetUserResponse Users = 1;
+}
+
+message GetUserResponse {
     string UserID = 1;
     string FullName = 2;
 }
